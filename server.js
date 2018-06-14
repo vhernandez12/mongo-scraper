@@ -1,35 +1,90 @@
 //dependencies
-var cheerio = require("cheerio");
 var express = require("express");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-var path =require("path");
-var logger= require("morgan");
 var method = require("method-override");
+var body = require("body-parser");
+var mongoose = require("mongoose");
+var logger  = require("morgan");
+var cheerio = require("cheerio");
+var request = require("request");
 
-//Mongoose
-var Note = require("")
+//mongoose
 
+var Note = require("./models/Note");
 
-//initialize express
+//require request and cheerio
+var request = require("request");
+var cheerio = require("cheerio");
 
+//intialize express
 var app = express();
 
-//public folder
-app.use(express.static("public"));
+//database configuration 
+var databaseUrl = "scrapper";
+var collection = ["scrapedData"];
 
-//Database configuration
-var databaseUrl = "scraper";
-var collections = ["scrapedData"]; 
-
-//mongojs coniguration to the db variable
-var db = mongojs(databaseUrl, collections);
-db.on("error", function(err){
-    console.log("Database Error", err);
-
+//hook mongojs configuration to the db variable
+var db = mongojs(databaseUrl, collection);
+db.on("error", function (error) {
+    console.log("Database Error:", error);
 });
 
-//main route
-app.get("/", function(req, res){
-    res.send("hello world")
+//main route 
+app.get("/", function (req, res) {
+    res.send("Hello World");
+});
+
+//Route 1
+//retreives  data
+app.get("/all", function (req, res) {
+    db.scrapedData.find({}, function (err, found) {
+        if (err) {
+
+        }
+
+        else {
+            res.json(found);
+        }
+    });
+});
+
+//rout 2
+//server scrape data from site your choce and save it to mongodb
+
+app.get("/scrape", function (req, res) {
+
+    request("https://www.nytimes.com/section/politics", function (error, response, html) {
+        var $ = cheerio.load(html); 
+
+        $(".headline").each(function (i, element) {
+            var headline = $(this).children("a").text();
+            var link = $(this).children("a").attr("href");
+
+            if (headline && link) {
+                db.scrapedData.save({
+                    headline: headline,
+                    link: link
+
+                },
+                    function (error, saved) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        else {
+                            console.log(saved);
+                        }
+
+                    });
+
+            }
+        });
+    });
+
+    res.send("Scrape complete");
+});
+
+
+
+
+app.listen(3000, function () {
+    console.log("App running on port 3000!");
 });
