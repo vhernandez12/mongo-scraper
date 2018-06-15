@@ -43,24 +43,29 @@
 
 <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="wrapper">
         <div class="jumbotron text-center">
             <p id="title">
                 <h1>International News</h1>
-            </p> 
-             <p id="subtitle">
+            </p>
+            <p id="subtitle">
                 <h3>
                     Univision Edition
                 </h3>
             </p>
         </div>
         <div class="panel-group">
-                <div class="panel panel-default">
-                  <div class="panel-heading">Search Results</div>
-                  <div class="panel-body" id="searchResults">Search Result Content</div>
-                </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Search Results</div>
+                <div class="panel-body" id="articles">Search Result Content</div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Notes</div>
+                <div class="panel-body" id="notes" placeholder="Enter Notes"></div>
+            </div>
         </div>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="app.js"></script>
 </body>
 
 </html>

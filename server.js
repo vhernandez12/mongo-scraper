@@ -1,15 +1,8 @@
 //dependencies
 var express = require("express");
-var method = require("method-override");
-var body = require("body-parser");
-var mongoose = require("mongoose");
-var logger  = require("morgan");
-var cheerio = require("cheerio");
-var request = require("request");
+var mongojs = require("mongojs");
 
 //mongoose
-
-var Note = require("./models/Note");
 
 //require request and cheerio
 var request = require("request");
@@ -52,13 +45,13 @@ app.get("/all", function (req, res) {
 
 app.get("/scrape", function (req, res) {
 
-    request("https://www.nytimes.com/section/politics", function (error, response, html) {
+    request("https://www.reddit.com/r/thewalkingdead/", function (error, response, html) {
         var $ = cheerio.load(html); 
 
-        $(".headline").each(function (i, element) {
-            var headline = $(this).children("a").text();
-            var link = $(this).children("a").attr("href");
-
+        $('a').each(function (i, element) {
+            var headline = $(element).children('h2').text();
+             var link = $(element).attr("href");
+            
             if (headline && link) {
                 db.scrapedData.save({
                     headline: headline,
