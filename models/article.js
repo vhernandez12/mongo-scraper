@@ -1,5 +1,5 @@
-var mangoose = require("mongoose");
-
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 //save a reference to the schema constructor 
 var Schema = mongoose.Schema;
 
@@ -7,24 +7,25 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
     //title required and of type string 
     title: {
-        type: String, 
-        required: true
-    }, 
-//link is required and of type String 
-    link: {
-        type: String, 
+        type: String,
         required: true
     },
-//note is an object that stres a note id
-// ref property links the objectID to the Note model
-//allows us to populate the article with an associated note
+    //link is required and of type String 
+    link: {
+        type: String,
+        required: true
+    },
+    //note is an object that stres a note id
+    // ref property links the objectID to the Note model
+    //allows us to populate the article with an associated note
 
     note: {
-        type: Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId,
         ref: "Note"
     }
 });
 
+ArticleSchema.index({ title: "text" });
 //creates model form above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 
