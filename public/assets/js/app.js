@@ -1,5 +1,6 @@
 //Handle Scrape button
 $("#scrape").on("click", function() {
+    console.log("callback function for #scrape triggered")
     $.ajax({
         method: "GET",
         url: "/scrape",

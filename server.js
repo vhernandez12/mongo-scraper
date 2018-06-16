@@ -6,8 +6,8 @@ var mongoose = require("mongoose");
 var path = require("path");
 
 // Requiring Note and Article models
-var Note = require("./models/Note.js");
-var Article = require("./models/Article.js");
+var Note = require("./models/note.js");
+var Article = require("./models/article.js");
 
 // Scraping tools
 var request = require("request");
@@ -36,7 +36,7 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({
     defaultLayout: "main",
-    partialsDir: path.join(__dirname, "/views/layouts/partials")
+    partialsDir: path.join(__dirname, "/views/partials")
 }));
 app.set("view engine", "handlebars");
 
@@ -85,6 +85,7 @@ app.get("/saved", function(req, res) {
 
 // A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
+  console.log("scrape endpoint hit");
   // First, we grab the body of the html with request
   request("https://www.reddit.com/r/thewalkingdead/", function(error, response, html) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
