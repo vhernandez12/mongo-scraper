@@ -18,14 +18,18 @@ var ArticleSchema = new Schema({
     //note is an object that stres a note id
     // ref property links the objectID to the Note model
     //allows us to populate the article with an associated note
+	saved: {
+		type: Boolean,
+		default: false
+	},
 
-    note: {
+    note: [{
         type: Schema.Types.ObjectId,
         ref: "Note"
-    }
+    }]
 });
 
-ArticleSchema.index({ title: "text" });
+
 //creates model form above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 
